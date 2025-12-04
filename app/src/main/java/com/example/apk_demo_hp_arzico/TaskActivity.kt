@@ -13,6 +13,11 @@ import kotlinx.coroutines.launch
 class TaskActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: TaskAdapter
+    private val taskList = mutableListOf<TaskItem>()
+    private var currentPage = 1
+    private var lastPage = 1
+    private var isLoading = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +28,27 @@ class TaskActivity : AppCompatActivity() {
         supportActionBar?.title = "Tasks"
 
         recyclerView = findViewById(R.id.recyclerViewTasks)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        val layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = layoutManager
+
+        adapter = TaskAdapter(taskList)
+        recyclerView.adapter = adapter
+
+        // Add scroll listener for pagination
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val visibleItemCount = layoutManager.childCount
+                val totalItemCount = layoutManager.itemCount
+                val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+                if (!isLoading && visibleItemCount + firstVisibleItemPosition >= totalItemCount - 5) {
+                    if (currentPage < lastPage) {
+                        loadNextPage()
+                    }
+                }
+            }
+        })
 
         fetchTasks()
     }
@@ -35,18 +60,21 @@ class TaskActivity : AppCompatActivity() {
                 val response = service.getTasks()
 
                 if (response.isSuccessful) {
-                    val taskResponse = response.body()
-                    val tasks = taskResponse?.data ?: emptyList()
-                    runOnUiThread {
-                        if (tasks.isNotEmpty()) {
-                            val adapter = TaskAdapter(tasks)
-                            recyclerView.adapter = adapter
-                        } else {
-                            Toast.makeText(
-                                this@TaskActivity,
-                                "No tasks found",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                    val paginatedResponse = response.body()
+                    paginatedResponse?.let {
+                        lastPage = it.meta?.last_page ?: 1
+                        val tasks = it.data ?: emptyList()
+                        runOnUiThread {
+                            taskList.clear()
+                            taskList.addAll(tasks)
+                            adapter.notifyDataSetChanged()
+                            if (taskList.isEmpty()) {
+                                Toast.makeText(
+                                    this@TaskActivity,
+                                    "No tasks found",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
                     }
                 } else {
@@ -63,6 +91,43 @@ class TaskActivity : AppCompatActivity() {
                     Toast.makeText(
                         this@TaskActivity,
                         "Error: ${e.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+    }
+
+    private fun loadNextPage() {
+        if (isLoading) return
+        isLoading = true
+        currentPage++
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val service = ApiClient.service(this@TaskActivity)
+                val response = service.getTasksByPage(currentPage)
+
+                if (response.isSuccessful) {
+                    val paginatedResponse = response.body()
+                    paginatedResponse?.let {
+                        val newTasks = it.data ?: emptyList()
+                        runOnUiThread {
+                            val previousSize = taskList.size
+                            taskList.addAll(newTasks)
+                            adapter.notifyItemRangeInserted(previousSize, newTasks.size)
+                            isLoading = false
+                        }
+                    }
+                } else {
+                    isLoading = false
+                }
+            } catch (e: Exception) {
+                isLoading = false
+                runOnUiThread {
+                    Toast.makeText(
+                        this@TaskActivity,
+                        "Error loading more: ${e.message}",
                         Toast.LENGTH_SHORT
                     ).show()
                 }

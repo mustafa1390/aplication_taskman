@@ -43,6 +43,36 @@ data class TaskItem(
 
 data class TaskResponse(val data: List<TaskItem>?)
 
+data class PaginatedTaskResponse(
+    val data: List<TaskItem>,
+    val links: Links?,
+    val meta: Meta?
+)
+
+data class Links(
+    val first: String?,
+    val last: String?,
+    val prev: String?,
+    val next: String?
+)
+
+data class Meta(
+    val current_page: Int,
+    val from: Int,
+    val last_page: Int,
+    val path: String?,
+    val per_page: Int,
+    val to: Int,
+    val total: Int,
+    val links: List<LinkItem>?
+)
+
+data class LinkItem(
+    val url: String?,
+    val label: String,
+    val active: Boolean
+)
+
 interface ApiService {
     @POST("register")
     suspend fun login(@Body req: RegisterRequest): Response<LoginResponse>
@@ -53,9 +83,12 @@ interface ApiService {
     @GET("user/profile/index")
     suspend fun getProfile(): Response<ProfileResponse>
 
-    // fetch tasks from taskman API
+    // fetch tasks from taskman API with pagination
     @GET("user/task/index")
-    suspend fun getTasks(): Response<TaskResponse>
+    suspend fun getTasks(): Response<PaginatedTaskResponse>
+
+    @GET("user/task/index")
+    suspend fun getTasksByPage(@retrofit2.http.Query("page") page: Int): Response<PaginatedTaskResponse>
 
     // fetch blogs from JSONPlaceholder (full URL) -> returns list of RemoteBlogPost
     @GET("https://jsonplaceholder.typicode.com/posts")

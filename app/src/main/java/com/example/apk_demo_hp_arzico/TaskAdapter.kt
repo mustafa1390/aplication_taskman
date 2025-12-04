@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class TaskAdapter(private val tasks: List<TaskItem>) :
+class TaskAdapter(private val tasks: MutableList<TaskItem>) :
     RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     inner class TaskViewHolder(itemView: android.view.View) : RecyclerView.ViewHolder(itemView) {
