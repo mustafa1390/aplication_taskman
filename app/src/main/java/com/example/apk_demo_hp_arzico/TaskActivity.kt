@@ -51,15 +51,15 @@ class TaskActivity : AppCompatActivity() {
             }
         })
 
-        fetchTasks()
-        setupFAB()
-    }
-
-    private fun setupFAB() {
-        val fab = findViewById<FloatingActionButton>(R.id.fabMenu)
-        fab.setOnClickListener {
-            Toast.makeText(this, "Share", Toast.LENGTH_SHORT).show()
+        // wire return button
+        val btnReturn = findViewById<FloatingActionButton>(R.id.btnReturn)
+        btnReturn.setOnClickListener {
+            finish()
         }
+
+        fetchTasks()
+
+
     }
 
     private fun fetchTasks() {
