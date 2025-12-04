@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : BaseActivity() {
 
@@ -48,6 +49,15 @@ class MainActivity : BaseActivity() {
                 }
                 else -> false
             }
+        }
+
+        setupFAB()
+    }
+
+    private fun setupFAB() {
+        val fab = findViewById<FloatingActionButton>(R.id.fabMenu)
+        fab.setOnClickListener {
+            Toast.makeText(this, "Share", Toast.LENGTH_SHORT).show()
         }
     }
 }

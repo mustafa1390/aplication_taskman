@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 
 class EditprofileActivity : AppCompatActivity() {
@@ -49,6 +50,15 @@ class EditprofileActivity : AppCompatActivity() {
 
         btnCancel.setOnClickListener {
             finish()
+        }
+
+        setupFAB()
+    }
+
+    private fun setupFAB() {
+        val fab = findViewById<FloatingActionButton>(R.id.fabMenu)
+        fab.setOnClickListener {
+            Toast.makeText(this, "Share Profile", Toast.LENGTH_SHORT).show()
         }
     }
 

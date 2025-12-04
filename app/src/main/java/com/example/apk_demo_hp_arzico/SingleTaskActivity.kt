@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -57,6 +58,14 @@ class SingleTaskActivity : AppCompatActivity() {
         }
 
         fetchSingleTask(taskId)
+        setupFAB()
+    }
+
+    private fun setupFAB() {
+        val fab = findViewById<FloatingActionButton>(R.id.fabMenu)
+        fab.setOnClickListener {
+            Toast.makeText(this, "Share Task", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -5,6 +5,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class CardActivity : AppCompatActivity() {
 
@@ -51,6 +52,15 @@ class CardActivity : AppCompatActivity() {
         btnDelete.setOnClickListener {
             Toast.makeText(this, "حذف کارت", Toast.LENGTH_SHORT).show()
             // TODO: Confirm and delete card from backend
+        }
+
+        setupFAB()
+    }
+
+    private fun setupFAB() {
+        val fab = findViewById<FloatingActionButton>(R.id.fabMenu)
+        fab.setOnClickListener {
+            Toast.makeText(this, "Share Card", Toast.LENGTH_SHORT).show()
         }
     }
 
