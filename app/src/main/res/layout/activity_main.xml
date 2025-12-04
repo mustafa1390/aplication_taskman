@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
             app:menu="@menu/bottom_nav_menu"
-            app:labelVisibilityMode="labelVisibilityLabelAndIcon" />
+            app:labelVisibilityMode="labeled" />
     </LinearLayout>
 
     <!-- Sidebar / Navigation Drawer -->
