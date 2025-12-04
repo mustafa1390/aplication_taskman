@@ -36,17 +36,15 @@ class TaskActivity : AppCompatActivity() {
 
                 if (response.isSuccessful) {
                     val taskResponse = response.body()
-                    if (taskResponse?.success == true) {
-                        val tasks = taskResponse.data ?: emptyList()
-                        runOnUiThread {
+                    val tasks = taskResponse?.data ?: emptyList()
+                    runOnUiThread {
+                        if (tasks.isNotEmpty()) {
                             val adapter = TaskAdapter(tasks)
                             recyclerView.adapter = adapter
-                        }
-                    } else {
-                        runOnUiThread {
+                        } else {
                             Toast.makeText(
                                 this@TaskActivity,
-                                "Failed: ${taskResponse?.data}",
+                                "No tasks found",
                                 Toast.LENGTH_SHORT
                             ).show()
                         }

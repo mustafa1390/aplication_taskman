@@ -31,18 +31,17 @@ data class RemoteBlogPost(
 
 // Task model for task list
 data class TaskItem(
+    val userId: Int,
     val id: Int,
     val title: String,
+    val body: Int?,
     val description: String?,
-    val status: String?,
-    val priority: String?,
+    val priority: Int?,
     @SerializedName("created_at")
-    val createdAt: String?,
-    @SerializedName("updated_at")
-    val updatedAt: String?
+    val createdAt: String?
 )
 
-data class TaskResponse(val success: Boolean, val data: List<TaskItem>?)
+data class TaskResponse(val data: List<TaskItem>?)
 
 interface ApiService {
     @POST("register")

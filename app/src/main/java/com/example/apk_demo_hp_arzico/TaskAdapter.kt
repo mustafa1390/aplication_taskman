@@ -11,13 +11,13 @@ class TaskAdapter(private val tasks: List<TaskItem>) :
     inner class TaskViewHolder(itemView: android.view.View) : RecyclerView.ViewHolder(itemView) {
         private val tvTitle: TextView = itemView.findViewById(R.id.tvTaskTitle)
         private val tvDescription: TextView = itemView.findViewById(R.id.tvTaskDescription)
-        private val tvStatus: TextView = itemView.findViewById(R.id.tvTaskStatus)
+        private val tvUserId: TextView = itemView.findViewById(R.id.tvTaskUserId)
         private val tvPriority: TextView = itemView.findViewById(R.id.tvTaskPriority)
 
         fun bind(task: TaskItem) {
             tvTitle.text = task.title
             tvDescription.text = task.description ?: "No description"
-            tvStatus.text = "Status: ${task.status ?: "N/A"}"
+            tvUserId.text = "User ID: ${task.userId}"
             tvPriority.text = "Priority: ${task.priority ?: "N/A"}"
         }
     }
