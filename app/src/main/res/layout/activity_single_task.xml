@@ -13,6 +13,15 @@
         android:background="#88A67E"
         android:titleTextColor="@android:color/white"
         app:title="Task Detail" />
+    <!-- Return button: goes back to task list -->
+    <Button
+        android:id="@+id/btnReturn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="بازگشت"
+        android:layout_margin="8dp"
+        android:backgroundTint="#88A67E"
+        android:textColor="#FFFFFF" />
 
     <ProgressBar
         android:id="@+id/progressBarSingle"

@@ -1,7 +1,9 @@
 package com.example.aplication_aplication_taskman
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
+import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -48,7 +50,21 @@ class SingleTaskActivity : AppCompatActivity() {
             return
         }
 
+        // wire return button
+        val btnReturn = findViewById<Button>(R.id.btnReturn)
+        btnReturn.setOnClickListener {
+            finish()
+        }
+
         fetchSingleTask(taskId)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            finish()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun fetchSingleTask(id: Int) {
