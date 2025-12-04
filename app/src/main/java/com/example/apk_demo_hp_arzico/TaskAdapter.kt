@@ -22,8 +22,10 @@ class TaskAdapter(private val tasks: MutableList<TaskItem>) :
         private val handler = Handler(Looper.getMainLooper())
         private var timerRunnable: Runnable? = null
         private var elapsedSeconds = 0
+        private var currentTask: TaskItem? = null
 
         fun bind(task: TaskItem) {
+            currentTask = task
             tvTitle.text = task.title
             tvDescription.text = task.description ?: "No description"
             tvUserId.text = "User ID: ${task.userId}"
@@ -41,7 +43,8 @@ class TaskAdapter(private val tasks: MutableList<TaskItem>) :
             // Show timer for inwork status
             if (status == "inwork") {
                 tvTimer.visibility = android.view.View.VISIBLE
-                elapsedSeconds = 0
+                // Initialize elapsedSeconds from priority field
+                elapsedSeconds = task.priority ?: 0
                 startTimer()
             } else {
                 tvTimer.visibility = android.view.View.GONE
