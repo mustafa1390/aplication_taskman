@@ -1,11 +1,12 @@
 package com.example.aplication_aplication_taskman
 
 import android.graphics.Color
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
 class TaskAdapter(private val tasks: MutableList<TaskItem>) :
@@ -16,7 +17,11 @@ class TaskAdapter(private val tasks: MutableList<TaskItem>) :
         private val tvDescription: TextView = itemView.findViewById(R.id.tvTaskDescription)
         private val tvUserId: TextView = itemView.findViewById(R.id.tvTaskUserId)
         private val tvPriority: TextView = itemView.findViewById(R.id.tvTaskPriority)
+        private val tvTimer: TextView = itemView.findViewById(R.id.tvTaskTimer)
         private val card: CardView? = itemView.findViewById(R.id.cardTask)
+        private val handler = Handler(Looper.getMainLooper())
+        private var timerRunnable: Runnable? = null
+        private var elapsedSeconds = 0
 
         fun bind(task: TaskItem) {
             tvTitle.text = task.title
@@ -27,10 +32,45 @@ class TaskAdapter(private val tasks: MutableList<TaskItem>) :
             // Color the card according to status
             val status = task.status?.lowercase()
             when (status) {
-                "done" -> card?.setCardBackgroundColor(Color.parseColor("#A5D6A7")) // green-ish
-                "notwork" -> card?.setCardBackgroundColor(Color.parseColor("#EF9A9A")) // red-ish
+                "done" -> card?.setCardBackgroundColor(Color.parseColor("#A5D6A7")) // green
+                "notwork" -> card?.setCardBackgroundColor(Color.parseColor("#EF9A9A")) // red
+                "inwork" -> card?.setCardBackgroundColor(Color.parseColor("#FFE0B2")) // orange
                 else -> card?.setCardBackgroundColor(Color.parseColor("#FFFFFF"))
             }
+
+            // Show timer for inwork status
+            if (status == "inwork") {
+                tvTimer.visibility = android.view.View.VISIBLE
+                elapsedSeconds = 0
+                startTimer()
+            } else {
+                tvTimer.visibility = android.view.View.GONE
+                stopTimer()
+            }
+        }
+
+        private fun startTimer() {
+            stopTimer() // Stop any existing timer
+            timerRunnable = object : Runnable {
+                override fun run() {
+                    elapsedSeconds++
+                    val hours = elapsedSeconds / 3600
+                    val minutes = (elapsedSeconds % 3600) / 60
+                    val seconds = elapsedSeconds % 60
+                    tvTimer.text = String.format("%02d:%02d:%02d", hours, minutes, seconds)
+                    handler.postDelayed(this, 1000)
+                }
+            }
+            handler.post(timerRunnable!!)
+        }
+
+        private fun stopTimer() {
+            timerRunnable?.let { handler.removeCallbacks(it) }
+            timerRunnable = null
+        }
+
+        fun onViewRecycled() {
+            stopTimer()
         }
     }
 
@@ -42,6 +82,11 @@ class TaskAdapter(private val tasks: MutableList<TaskItem>) :
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         holder.bind(tasks[position])
+    }
+
+    override fun onViewRecycled(holder: TaskViewHolder) {
+        super.onViewRecycled(holder)
+        holder.onViewRecycled()
     }
 
     override fun getItemCount(): Int = tasks.size

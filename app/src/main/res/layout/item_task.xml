@@ -64,6 +64,19 @@
 
         </LinearLayout>
 
+        <!-- Timer for inwork status -->
+        <TextView
+            android:id="@+id/tvTaskTimer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="00:00:00"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#FF9800"
+            android:gravity="center"
+            android:layout_marginTop="8dp"
+            android:visibility="gone" />
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
