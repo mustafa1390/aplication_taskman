@@ -30,11 +30,11 @@ class MainActivity : BaseActivity() {
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav)
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_dashboard -> {
+                R.id.nav_home -> {
                     startActivity(Intent(this, DashboardActivity::class.java))
                     true
                 }
-                R.id.nav_tasks -> {
+                R.id.nav_listtask -> {
                     startActivity(Intent(this, TaskActivity::class.java))
                     true
                 }

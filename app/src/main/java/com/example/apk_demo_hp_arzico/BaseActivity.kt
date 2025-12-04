@@ -57,12 +57,12 @@ open class BaseActivity : AppCompatActivity() {
                     }
                 }
                 R.id.nav_item -> {
-                    if (this !is RegisterActivity) {
+                    if (this !is DashboardActivity) {
                         startActivity(Intent(this, DashboardActivity::class.java))
                     }
                 }
                 R.id.nav_codeverify -> {
-                    if (this !is RegisterActivity) {
+                    if (this !is CodeverifyActivity) {
                         startActivity(Intent(this, CodeverifyActivity::class.java))
                     }
                 }
@@ -92,12 +92,12 @@ open class BaseActivity : AppCompatActivity() {
                     }
                 }
                 R.id.nav_editprofile -> {
-                    if (this !is ListblogActivity) {
+                    if (this !is EditprofileActivity) {
                         startActivity(Intent(this, EditprofileActivity::class.java))
                     }
                 }
                 R.id.nav_listtask -> {
-                    if (this !is ListblogActivity) {
+                    if (this !is TaskActivity) {
                         startActivity(Intent(this, TaskActivity::class.java))
                     }
                 }
