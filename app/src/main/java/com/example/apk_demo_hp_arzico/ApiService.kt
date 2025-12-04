@@ -74,6 +74,33 @@ data class LinkItem(
     val active: Boolean
 )
 
+// Single task response and task time model
+data class TaskTimeItem(
+    val id: Int,
+    val title: String?,
+    val body: Int?,
+    val description: Long?,
+    val priority: Int?,
+    @SerializedName("created_at") val createdAt: String?,
+    @SerializedName("updated_at") val updatedAt: String?
+)
+
+data class SingleTaskData(
+    val userId: Int,
+    val id: Int,
+    val title: String,
+    val body: Int?,
+    val description: String?,
+    val priority: Int?,
+    @SerializedName("created_at") val createdAt: String?,
+    @SerializedName("updated_at") val updatedAt: String?,
+    val pdate: String?,
+    val status: String?,
+    @SerializedName("task_times") val taskTimes: List<TaskTimeItem>?
+)
+
+data class SingleTaskResponse(val data: SingleTaskData?)
+
 interface ApiService {
     @POST("register")
     suspend fun login(@Body req: RegisterRequest): Response<LoginResponse>
@@ -90,6 +117,10 @@ interface ApiService {
 
     @GET("user/task/index")
     suspend fun getTasksByPage(@retrofit2.http.Query("page") page: Int): Response<PaginatedTaskResponse>
+
+    // get single task by id
+    @GET("user/task/{id}")
+    suspend fun getTaskById(@retrofit2.http.Path("id") id: Int): Response<SingleTaskResponse>
 
     // fetch blogs from JSONPlaceholder (full URL) -> returns list of RemoteBlogPost
     @GET("https://jsonplaceholder.typicode.com/posts")

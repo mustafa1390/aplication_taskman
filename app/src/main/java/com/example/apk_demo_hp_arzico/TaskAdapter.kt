@@ -3,6 +3,7 @@ package com.example.aplication_aplication_taskman
 import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
@@ -38,6 +39,14 @@ class TaskAdapter(private val tasks: MutableList<TaskItem>) :
                 "notwork" -> card?.setCardBackgroundColor(Color.parseColor("#EF9A9A")) // red
                 "inwork" -> card?.setCardBackgroundColor(Color.parseColor("#FFE0B2")) // orange
                 else -> card?.setCardBackgroundColor(Color.parseColor("#FFFFFF"))
+            }
+
+            // set click to open single task
+            itemView.setOnClickListener {
+                val ctx = itemView.context
+                val intent = Intent(ctx, SingleTaskActivity::class.java)
+                intent.putExtra("task_id", task.id)
+                ctx.startActivity(intent)
             }
 
             // Show timer for inwork status
