@@ -1,7 +1,9 @@
 package com.example.aplication_aplication_taskman
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : BaseActivity() {
 
@@ -22,6 +24,30 @@ class MainActivity : BaseActivity() {
             Toast.makeText(this, "No token stored", Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(this, "Token: $token", Toast.LENGTH_SHORT).show()
+        }
+
+        // Setup bottom navigation
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav)
+        bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_dashboard -> {
+                    startActivity(Intent(this, DashboardActivity::class.java))
+                    true
+                }
+                R.id.nav_tasks -> {
+                    startActivity(Intent(this, TaskActivity::class.java))
+                    true
+                }
+                R.id.nav_profile -> {
+                    startActivity(Intent(this, ProfileActivity::class.java))
+                    true
+                }
+                R.id.nav_about -> {
+                    startActivity(Intent(this, AboutActivity::class.java))
+                    true
+                }
+                else -> false
+            }
         }
     }
 }

@@ -27,7 +27,8 @@
         <FrameLayout
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:gravity="center"
             android:background="#307CEF">
 
@@ -40,6 +41,15 @@
                 android:textStyle="bold"
                 android:textColor="#333333" />
         </FrameLayout>
+
+        <!-- Bottom Navigation View -->
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_nav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            app:menu="@menu/bottom_nav_menu"
+            app:labelVisibilityMode="labelVisibilityLabelAndIcon" />
     </LinearLayout>
 
     <!-- Sidebar / Navigation Drawer -->
