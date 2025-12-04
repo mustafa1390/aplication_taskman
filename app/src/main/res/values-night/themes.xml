@@ -1,0 +1,13 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.aplication_aplication_taskman" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary brand color for dark theme -->
+        <item name="colorPrimary">@color/purple_200</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryContainer">@color/purple_500</item>
+        <!-- Surface / background adjustments for dark mode -->
+        <item name="colorSurface">#121212</item>
+        <item name="colorOnSurface">@color/white</item>
+        <item name="android:statusBarColor">@color/purple_200</item>
+    </style>
+</resources>

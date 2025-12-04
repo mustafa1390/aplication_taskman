@@ -1,0 +1,16 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.aplication_aplication_taskman" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary brand color -->
+        <item name="colorPrimary">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimaryContainer">@color/purple_500</item>
+        <!-- Surface / background adjustments -->
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/black</item>
+        <!-- Status bar color for API >= 21 -->
+        <item name="android:statusBarColor">@color/purple_200</item>
+    </style>
+
+    <style name="Theme.aplication_aplication_taskman" parent="Base.Theme.aplication_aplication_taskman" />
+</resources>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#88a67e">
+
+
+
+    <ImageView
+        android:id="@+id/coverImage"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:srcCompat="@drawable/logo_2"
+        android:contentDescription="Cover image"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:minHeight="200dp"
+        android:background="@drawable/login_box_shape"
+        android:paddingTop="20dp"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        android:paddingBottom="40dp"
+        android:orientation="vertical"
+        >
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="231dp"
+            android:layout_height="48dp"
+            android:layout_margin="20dp"
+            android:layout_marginTop="16dp"
+            android:gravity="start"
+            android:layoutDirection="rtl"
+            android:text="ورود کاربر "
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/etMobile"
+            android:hint="شماره همراه"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="viewStart"
+            android:gravity="start"
+            android:layoutDirection="rtl"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp" />
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:hint="رمز عبور"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:textAlignment="viewStart"
+            android:gravity="start"
+            android:layoutDirection="rtl"
+            android:layout_marginTop="16dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@color/purple_500"
+            android:text="ورود"
+            android:textColor="@color/white"
+            android:textSize="16sp"  />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/nav_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@color/purple_700"
+            android:text="  ثبت نام کاربر"
+            android:bufferType="spannable"
+            android:textColor="@color/black"
+            android:textSize="16sp"  />
+
+
+    </LinearLayout>
+
+</LinearLayout>
