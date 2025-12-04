@@ -19,7 +19,7 @@ class AuthInterceptor(private val tokenManager: TokenManager) : Interceptor {
 }
 
 object ApiClient {
-    private const val BASE_URL = "https://www.aplication_taskman.ir/api/v1/"
+    private const val BASE_URL = "https://www.taskman.ir/api/v1/"
 
     fun retrofit(context: Context): retrofit2.Retrofit {
         val tokenManager = TokenManager(context)

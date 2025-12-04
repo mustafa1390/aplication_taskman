@@ -29,6 +29,21 @@ data class RemoteBlogPost(
     val body: String
 )
 
+// Task model for task list
+data class TaskItem(
+    val id: Int,
+    val title: String,
+    val description: String?,
+    val status: String?,
+    val priority: String?,
+    @SerializedName("created_at")
+    val createdAt: String?,
+    @SerializedName("updated_at")
+    val updatedAt: String?
+)
+
+data class TaskResponse(val success: Boolean, val data: List<TaskItem>?)
+
 interface ApiService {
     @POST("register")
     suspend fun login(@Body req: RegisterRequest): Response<LoginResponse>
@@ -36,8 +51,12 @@ interface ApiService {
     @POST("login")
     suspend fun login(@Body req: LoginRequest): Response<LoginResponse>
 
-    @GET("user/profile")
+    @GET("user/profile/index")
     suspend fun getProfile(): Response<ProfileResponse>
+
+    // fetch tasks from taskman API
+    @GET("user/task/index")
+    suspend fun getTasks(): Response<TaskResponse>
 
     // fetch blogs from JSONPlaceholder (full URL) -> returns list of RemoteBlogPost
     @GET("https://jsonplaceholder.typicode.com/posts")

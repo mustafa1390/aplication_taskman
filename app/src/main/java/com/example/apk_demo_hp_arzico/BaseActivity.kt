@@ -96,6 +96,11 @@ open class BaseActivity : AppCompatActivity() {
                         startActivity(Intent(this, EditprofileActivity::class.java))
                     }
                 }
+                R.id.nav_listtask -> {
+                    if (this !is ListblogActivity) {
+                        startActivity(Intent(this, TaskActivity::class.java))
+                    }
+                }
             }
             true
         }
