@@ -1,8 +1,11 @@
 package com.example.aplication_aplication_taskman
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
 class TaskAdapter(private val tasks: MutableList<TaskItem>) :
@@ -13,12 +16,21 @@ class TaskAdapter(private val tasks: MutableList<TaskItem>) :
         private val tvDescription: TextView = itemView.findViewById(R.id.tvTaskDescription)
         private val tvUserId: TextView = itemView.findViewById(R.id.tvTaskUserId)
         private val tvPriority: TextView = itemView.findViewById(R.id.tvTaskPriority)
+        private val card: CardView? = itemView.findViewById(R.id.cardTask)
 
         fun bind(task: TaskItem) {
             tvTitle.text = task.title
             tvDescription.text = task.description ?: "No description"
             tvUserId.text = "User ID: ${task.userId}"
             tvPriority.text = "Priority: ${task.priority ?: "N/A"}"
+
+            // Color the card according to status
+            val status = task.status?.lowercase()
+            when (status) {
+                "done" -> card?.setCardBackgroundColor(Color.parseColor("#A5D6A7")) // green-ish
+                "notwork" -> card?.setCardBackgroundColor(Color.parseColor("#EF9A9A")) // red-ish
+                else -> card?.setCardBackgroundColor(Color.parseColor("#FFFFFF"))
+            }
         }
     }
 

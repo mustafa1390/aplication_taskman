@@ -37,6 +37,7 @@ data class TaskItem(
     val body: Int?,
     val description: String?,
     val priority: Int?,
+    val status: String?,
     @SerializedName("created_at")
     val createdAt: String?
 )
