@@ -24,6 +24,17 @@
             android:textStyle="bold"
             android:textColor="#333333"
             android:layout_marginBottom="8dp" />
+        <TextView
+            android:id="@+id/tvDuringLive"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Task tvDuringLive"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#FBFBFB"
+            android:background="#090909"
+            android:layoutDirection="rtl"
+            android:layout_marginBottom="8dp" />
 
         <!-- Task Description -->
         <TextView
@@ -36,6 +47,45 @@
             android:maxLines="2"
             android:ellipsize="end"
             android:layout_marginBottom="8dp" />
+
+
+        <!-- Task Status and Priority -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="4dp">
+
+
+
+
+
+
+            <TextView
+                android:id="@+id/tvTaskPhase"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layoutDirection="rtl"
+                android:text="Phase: High"
+                android:textColor="#FBFBFB"
+                android:background="#009688" />
+            <TextView
+            android:id="@+id/tvTaskProject"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Priority: High"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:layoutDirection="rtl"
+            android:textColor="#FBFBFB"
+            android:background="#651DE6" />
+
+
+        </LinearLayout>
 
         <!-- Task Status and Priority -->
         <LinearLayout
@@ -62,6 +112,12 @@
                 android:textSize="12sp"
                 android:textColor="#666666" />
 
+
+
+
+
+
+
         </LinearLayout>
 
         <!-- Timer for inwork status -->
@@ -72,7 +128,7 @@
             android:text="00:00:00"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:textColor="#FF9800"
+            android:textColor="#2121E9"
             android:gravity="center"
             android:layout_marginTop="8dp"
             android:visibility="gone" />

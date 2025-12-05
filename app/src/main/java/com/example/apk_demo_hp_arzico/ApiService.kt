@@ -38,6 +38,12 @@ data class TaskItem(
     val description: String?,
     val priority: Int?,
     val status: String?,
+    val flag: String?,
+    val dtimefrmt: String?,
+    val project: String?,
+    val phase: String?,
+    @SerializedName("during_live")
+    val duringLive: Int?,
     @SerializedName("created_at")
     val createdAt: String?
 )

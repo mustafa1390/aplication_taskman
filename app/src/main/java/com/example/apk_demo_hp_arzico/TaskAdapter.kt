@@ -15,9 +15,12 @@ class TaskAdapter(private val tasks: MutableList<TaskItem>) :
 
     inner class TaskViewHolder(itemView: android.view.View) : RecyclerView.ViewHolder(itemView) {
         private val tvTitle: TextView = itemView.findViewById(R.id.tvTaskTitle)
+        private val tvProject: TextView = itemView.findViewById(R.id.tvTaskProject)
+        private val tvPhase: TextView = itemView.findViewById(R.id.tvTaskPhase)
         private val tvDescription: TextView = itemView.findViewById(R.id.tvTaskDescription)
         private val tvUserId: TextView = itemView.findViewById(R.id.tvTaskUserId)
         private val tvPriority: TextView = itemView.findViewById(R.id.tvTaskPriority)
+        private val tvDuringLive: TextView = itemView.findViewById(R.id.tvDuringLive)
         private val tvTimer: TextView = itemView.findViewById(R.id.tvTaskTimer)
         private val card: CardView? = itemView.findViewById(R.id.cardTask)
         private val handler = Handler(Looper.getMainLooper())
@@ -28,16 +31,20 @@ class TaskAdapter(private val tasks: MutableList<TaskItem>) :
         fun bind(task: TaskItem) {
             currentTask = task
             tvTitle.text = task.title
+            tvProject.text =  " پروژه: ${task.project}"
+            tvPhase.text =  " فاز: ${task.phase}"
+            tvDuringLive.text =  " ساعت کارکرد :  ${task.dtimefrmt}"
             tvDescription.text = task.description ?: "No description"
             tvUserId.text = "User ID: ${task.userId}"
             tvPriority.text = "Priority: ${task.priority ?: "N/A"}"
 
             // Color the card according to status
+            val flag = task.flag?.lowercase()
             val status = task.status?.lowercase()
-            when (status) {
+            when (flag) {
                 "done" -> card?.setCardBackgroundColor(Color.parseColor("#A5D6A7")) // green
                 "notwork" -> card?.setCardBackgroundColor(Color.parseColor("#EF9A9A")) // red
-                "inwork" -> card?.setCardBackgroundColor(Color.parseColor("#FFE0B2")) // orange
+                "running" -> card?.setCardBackgroundColor(Color.parseColor("#00acd2")) // orange
                 else -> card?.setCardBackgroundColor(Color.parseColor("#FFFFFF"))
             }
 
@@ -49,11 +56,11 @@ class TaskAdapter(private val tasks: MutableList<TaskItem>) :
                 ctx.startActivity(intent)
             }
 
-            // Show timer for inwork status
-            if (status == "inwork") {
+            // Show timer for running flag
+            if (flag == "running") {
                 tvTimer.visibility = android.view.View.VISIBLE
                 // Initialize elapsedSeconds from priority field
-                elapsedSeconds = task.priority ?: 0
+                elapsedSeconds = task.duringLive ?: 0
                 startTimer()
             } else {
                 tvTimer.visibility = android.view.View.GONE
