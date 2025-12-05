@@ -110,7 +110,6 @@ data class SingleTaskResponse(val data: SingleTaskData?)
 // Task time update models
 data class UpdateTaskTimeRequest(
     val task_id: Int,
-    val task_time_id: Int,
     val percent: Int
 )
 

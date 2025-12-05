@@ -71,9 +71,15 @@ class TaskAdapter(private val tasks: MutableList<TaskItem>) :
                 // Initialize elapsedSeconds from priority field
                 elapsedSeconds = task.duringLive ?: 0
                 startTimer()
+                // when running, hide Start button and show End button
+                btnStart.visibility = android.view.View.GONE
+                btnStop.visibility = android.view.View.VISIBLE
             } else {
                 tvTimer.visibility = android.view.View.GONE
                 stopTimer()
+                // when not running, show Start button and hide End button
+                btnStart.visibility = android.view.View.VISIBLE
+                btnStop.visibility = android.view.View.GONE
             }
 
 
@@ -81,17 +87,17 @@ class TaskAdapter(private val tasks: MutableList<TaskItem>) :
 
             // Handle start button click
             btnStart.setOnClickListener {
-                showPercentDialog(it.id)
+                Toast.makeText(itemView.context, "Start clicked", Toast.LENGTH_SHORT).show()
             }
 
             // Handle stop button click
             btnStop.setOnClickListener {
-                Toast.makeText(itemView.context, "Stop clicked", Toast.LENGTH_SHORT).show()
+                showPercentDialog(it.id)
             }
         }
 
 
-        private fun showPercentDialog(taskTimeId: Int) {
+        private fun showPercentDialog(taskId: Int) {
             val context = itemView.context
             val dialogView = LayoutInflater.from(context)
                 .inflate(R.layout.dialog_task_update, null)
@@ -129,19 +135,18 @@ class TaskAdapter(private val tasks: MutableList<TaskItem>) :
                 btnStart.isEnabled = false
                 dialog.dismiss()
 
-                updateTaskTime(taskTimeId, percent)
+                updateTaskTime(taskId, percent)
             }
 
             dialog.show()
         }
 
-        private fun updateTaskTime(taskTimeId: Int, percent: Int) {
+        private fun updateTaskTime(taskId: Int, percent: Int) {
             CoroutineScope(Dispatchers.IO).launch {
                 try {
                     val svc = ApiClient.service(itemView.context)
                     val req = UpdateTaskTimeRequest(
                         task_id = currentTask?.id ?: 0,
-                        task_time_id = taskTimeId,
                         percent = percent
                     )
                     val resp = svc.updateTaskTime(req)
