@@ -107,6 +107,17 @@ data class SingleTaskData(
 
 data class SingleTaskResponse(val data: SingleTaskData?)
 
+// Task time update models
+data class UpdateTaskTimeRequest(
+    val task_time_id: Int,
+    val percent: Int
+)
+
+data class UpdateTaskTimeResponse(
+    val success: Boolean,
+    val message: String?
+)
+
 interface ApiService {
     @POST("register")
     suspend fun login(@Body req: RegisterRequest): Response<LoginResponse>
@@ -127,6 +138,11 @@ interface ApiService {
     // get single task by id
     @GET("user/task/{id}")
     suspend fun getTaskById(@retrofit2.http.Path("id") id: Int): Response<SingleTaskResponse>
+
+    // update task time
+    @POST("user/task_time/update")
+    suspend fun updateTaskTime(@Body req: UpdateTaskTimeRequest): Response<UpdateTaskTimeResponse>
+
 
     // fetch blogs from JSONPlaceholder (full URL) -> returns list of RemoteBlogPost
     @GET("https://jsonplaceholder.typicode.com/posts")
