@@ -87,6 +87,7 @@ class TaskAdapter(private val tasks: MutableList<TaskItem>) :
 
             // Handle start button click
             btnStart.setOnClickListener {
+                showPercentDialog(it.id)
                 Toast.makeText(itemView.context, "Start clicked", Toast.LENGTH_SHORT).show()
             }
 
