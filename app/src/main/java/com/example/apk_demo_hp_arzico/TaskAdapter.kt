@@ -16,12 +16,14 @@ import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import android.widget.ProgressBar
 
 class TaskAdapter(private val tasks: MutableList<TaskItem>) :
     RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     inner class TaskViewHolder(itemView: android.view.View) : RecyclerView.ViewHolder(itemView) {
         private val tvTitle: TextView = itemView.findViewById(R.id.tvTaskTitle)
+        private val tvPercent: TextView = itemView.findViewById(R.id.tvTaskPercent)
         private val tvProject: TextView = itemView.findViewById(R.id.tvTaskProject)
         private val tvPhase: TextView = itemView.findViewById(R.id.tvTaskPhase)
         private val tvDescription: TextView = itemView.findViewById(R.id.tvTaskDescription)
@@ -40,6 +42,7 @@ class TaskAdapter(private val tasks: MutableList<TaskItem>) :
         fun bind(task: TaskItem) {
             currentTask = task
             tvTitle.text = task.title
+            tvPercent.text =  "${task.percent} %"
             tvProject.text =  " پروژه: ${task.project}"
             tvPhase.text =  " فاز: ${task.phase}"
             tvDuringLive.text =  " ساعت کارکرد :  ${task.dtimefrmt}"
@@ -87,13 +90,15 @@ class TaskAdapter(private val tasks: MutableList<TaskItem>) :
 
             // Handle start button click
             btnStart.setOnClickListener {
-                showPercentDialog(it.id)
+                // pass the actual task id and a non-null percent
+                updateTaskTime(task.id, task.percent ?: 0)
                 Toast.makeText(itemView.context, "Start clicked", Toast.LENGTH_SHORT).show()
             }
 
             // Handle stop button click
             btnStop.setOnClickListener {
-                showPercentDialog(it.id)
+                // show dialog for this specific task id (not the view id)
+                showPercentDialog(task.id)
             }
         }
 
@@ -143,11 +148,16 @@ class TaskAdapter(private val tasks: MutableList<TaskItem>) :
         }
 
         private fun updateTaskTime(taskId: Int, percent: Int) {
+            // Show loading dialog while updating and refresh tasks on success
+            val context = itemView.context
+            val loading = showLoadingDialog(context)
+            loading.show()
+
             CoroutineScope(Dispatchers.IO).launch {
                 try {
                     val svc = ApiClient.service(itemView.context)
                     val req = UpdateTaskTimeRequest(
-                        task_id = currentTask?.id ?: 0,
+                        task_id = taskId,
                         percent = percent
                     )
                     val resp = svc.updateTaskTime(req)
@@ -155,37 +165,82 @@ class TaskAdapter(private val tasks: MutableList<TaskItem>) :
                     if (resp.isSuccessful) {
                         val body = resp.body()
                         if (body?.success == true) {
+                            // On success, refresh the task list from server
                             CoroutineScope(Dispatchers.Main).launch {
                                 Toast.makeText(
-                                    itemView.context,
+                                    context,
                                     body.message ?: "Updated successfully",
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                refreshTasks()
+                                loading.dismiss()
                             }
                         } else {
                             CoroutineScope(Dispatchers.Main).launch {
                                 btnStart.isEnabled = true
                                 Toast.makeText(
-                                    itemView.context,
+                                    context,
                                     body?.message ?: "Update failed",
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                loading.dismiss()
                             }
                         }
                     } else {
                         CoroutineScope(Dispatchers.Main).launch {
                             btnStart.isEnabled = true
                             Toast.makeText(
-                                itemView.context,
+                                context,
                                 "Error: ${resp.code()}",
                                 Toast.LENGTH_SHORT
                             ).show()
+                            loading.dismiss()
                         }
                     }
                 } catch (e: Exception) {
                     CoroutineScope(Dispatchers.Main).launch {
                         btnStart.isEnabled = true
-                        Toast.makeText(itemView.context, "Exception: ${e.message}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Exception: ${e.message}", Toast.LENGTH_SHORT).show()
+                        loading.dismiss()
+                    }
+                }
+            }
+        }
+
+        // Show a simple indeterminate loading dialog
+        private fun showLoadingDialog(context: android.content.Context): AlertDialog {
+            val progressBar = ProgressBar(context)
+            val dialog = AlertDialog.Builder(context)
+                .setView(progressBar)
+                .setCancelable(false)
+                .create()
+            return dialog
+        }
+
+        // Refresh tasks from API and update adapter list
+        private fun refreshTasks() {
+            val context = itemView.context
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val svc = ApiClient.service(context)
+                    val resp = svc.getTasks()
+                    if (resp.isSuccessful) {
+                        val body = resp.body()
+                        val newList = body?.data ?: emptyList()
+                        CoroutineScope(Dispatchers.Main).launch {
+                            tasks.clear()
+                            tasks.addAll(newList)
+                            notifyDataSetChanged()
+                            Toast.makeText(context, "Tasks refreshed", Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        CoroutineScope(Dispatchers.Main).launch {
+                            Toast.makeText(context, "Refresh failed: ${resp.code()}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } catch (e: Exception) {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        Toast.makeText(context, "Refresh error: ${e.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

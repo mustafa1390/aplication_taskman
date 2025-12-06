@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="180dp"
+    android:height="180dp"
+    android:viewportWidth="180"
+    android:viewportHeight="180">
+    <!-- Logo 3 Vector Icon -->
+    <path
+        android:fillColor="#F58320"
+        android:pathData="M90,20c-38.66,0 -70,31.34 -70,70s31.34,70 70,70 70,-31.34 70,-70 -31.34,-70 -70,-70zm0,125c-30.37,0 -55,-24.63 -55,-55s24.63,-55 55,-55 55,24.63 55,55 -24.63,55 -55,55z" />
+    <path
+        android:fillColor="#FFF"
+        android:pathData="M90,50c-22.09,0 -40,17.91 -40,40s17.91,40 40,40 40,-17.91 40,-40 -17.91,-40 -40,-40zm0,70c-16.57,0 -30,-13.43 -30,-30s13.43,-30 30,-30 30,13.43 30,30 -13.43,30 -30,30z" />
+    <path
+        android:fillColor="#F58320"
+        android:pathData="M90,65c-13.81,0 -25,11.19 -25,25s11.19,25 25,25 25,-11.19 25,-25 -11.19,-25 -25,-25zm0,40c-8.28,0 -15,-6.72 -15,-15s6.72,-15 15,-15 15,6.72 15,15 -6.72,15 -15,15z" />
+</vector>

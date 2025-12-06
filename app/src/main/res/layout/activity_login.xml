@@ -12,7 +12,10 @@
         android:id="@+id/coverImage"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        app:srcCompat="@drawable/logo_2"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:paddingEnd="10dp"
+        app:srcCompat="@drawable/logo_3"
         android:contentDescription="Cover image"
         android:scaleType="centerCrop" />
 

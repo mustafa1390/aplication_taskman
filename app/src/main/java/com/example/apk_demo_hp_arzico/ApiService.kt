@@ -37,6 +37,7 @@ data class TaskItem(
     val body: Int?,
     val description: String?,
     val priority: Int?,
+    val percent: Int?,
     val status: String?,
     val flag: String?,
     val dtimefrmt: String?,
