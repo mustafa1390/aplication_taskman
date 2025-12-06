@@ -32,7 +32,7 @@ class TaskActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
 
-        adapter = TaskAdapter(taskList)
+        adapter = TaskAdapter(taskList, recyclerView)
         recyclerView.adapter = adapter
 
         // Add scroll listener for pagination

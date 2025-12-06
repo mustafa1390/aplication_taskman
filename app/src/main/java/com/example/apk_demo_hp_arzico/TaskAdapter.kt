@@ -18,7 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import android.widget.ProgressBar
 
-class TaskAdapter(private val tasks: MutableList<TaskItem>) :
+class TaskAdapter(private val tasks: MutableList<TaskItem>, private val recyclerView: RecyclerView? = null) :
     RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     inner class TaskViewHolder(itemView: android.view.View) : RecyclerView.ViewHolder(itemView) {
@@ -68,21 +68,36 @@ class TaskAdapter(private val tasks: MutableList<TaskItem>) :
                 ctx.startActivity(intent)
             }
 
+
+
+            val isRunningTask = task.isRunningTask ?: 0;
             // Show timer for running flag
-            if (flag == "running") {
-                tvTimer.visibility = android.view.View.VISIBLE
-                // Initialize elapsedSeconds from priority field
-                elapsedSeconds = task.duringLive ?: 0
-                startTimer()
-                // when running, hide Start button and show End button
-                btnStart.visibility = android.view.View.GONE
-                btnStop.visibility = android.view.View.VISIBLE
-            } else {
+            if (isRunningTask == 0) {
                 tvTimer.visibility = android.view.View.GONE
                 stopTimer()
                 // when not running, show Start button and hide End button
                 btnStart.visibility = android.view.View.VISIBLE
-                btnStop.visibility = android.view.View.GONE
+                btnStop.visibility = android.view.View.VISIBLE
+            }
+
+            if (isRunningTask != 0) {
+
+                if (flag == "running") {
+                    tvTimer.visibility = android.view.View.VISIBLE
+                    // Initialize elapsedSeconds from priority field
+                    elapsedSeconds = task.duringLive ?: 0
+                    startTimer()
+                    // when running, hide Start button and show End button
+                    btnStart.visibility = android.view.View.GONE
+                    btnStop.visibility = android.view.View.VISIBLE
+                }
+                if (flag != "running") {
+                    tvTimer.visibility = android.view.View.GONE
+                    stopTimer()
+                    // when not running, show Start button and hide End button
+                    btnStart.visibility = android.view.View.GONE
+                    btnStop.visibility = android.view.View.GONE
+                }
             }
 
 
@@ -231,6 +246,8 @@ class TaskAdapter(private val tasks: MutableList<TaskItem>) :
                             tasks.clear()
                             tasks.addAll(newList)
                             notifyDataSetChanged()
+                            // Scroll to top after refresh
+                            recyclerView?.scrollToPosition(0)
                             Toast.makeText(context, "Tasks refreshed", Toast.LENGTH_SHORT).show()
                         }
                     } else {

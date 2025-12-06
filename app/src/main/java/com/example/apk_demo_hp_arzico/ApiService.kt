@@ -37,6 +37,8 @@ data class TaskItem(
     val body: Int?,
     val description: String?,
     val priority: Int?,
+    @SerializedName("is_running_task")
+    val isRunningTask: Int?,
     val percent: Int?,
     val status: String?,
     val flag: String?,
